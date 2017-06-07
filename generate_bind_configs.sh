@@ -34,7 +34,7 @@ generate_zones() {
 	while read domain; do
 		echo 'zone "'${domain//_/-}'" { type master; file "/etc/named/reductor_zones.conf"; };'
 	done > $zones
-	m4 -Udnl -D__domain__=${NS_GLOBAL:-denypage.ru} -D__ip__=$ip $DOMAIN_TMPLT >> "/etc/named/reductor_zones.conf"
+	m4 -Udnl -D__domain__=${NS_GLOBAL:-denypage.ru} -D__ip__=$ip $DOMAIN_TMPLT > "/etc/named/reductor_zones.conf"
 
 }
 
