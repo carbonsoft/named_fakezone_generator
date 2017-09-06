@@ -19,7 +19,7 @@ cleanup() {
 
 # с кириллическими доменами пока что проблема, вообще здесь избавляемся от дублирования из-за fqdn/www.
 process_list() {
-	sed 's/\.$//' | sed -e 's/^www\.//' | python -u $fakezoneroot/idna_fix.py | sort -u
+	sed 's/\.$//' | tr -d ' ' | sed -e 's/^www\.//' | python -u $fakezoneroot/idna_fix.py | sort -u
 }
 
 check_output() {
