@@ -12,8 +12,19 @@ fi
 REDUCTOR_IP=10.0.0.1
 
 # чтобы scp не спрашивал пароль нужно создать ssh-ключи и закинуть их с помощью ssh-copy-id на carbon reductor
-scp root@$REDUCTOR_IP:/usr/local/Reductor/userinfo/config /tmp/reductor.config
-scp root@$REDUCTOR_IP:/usr/local/Reductor/lists/https.resolv /tmp/reductor.https.resolv
+
+carbon_reductor_7() {
+	scp root@$REDUCTOR_IP:/usr/local/Reductor/userinfo/config /tmp/reductor.config
+	scp root@$REDUCTOR_IP:/usr/local/Reductor/lists/https.resolv /tmp/reductor.https.resolv
+}
+
+carbon_reductor_8() {
+	scp root@$REDUCTOR_IP:/app/reductor/cfg/config /tmp/reductor.config
+	scp root@$REDUCTOR_IP:/app/reductor/usr/local/Reductor/lists/https.resolv /tmp/reductor.https.resolv
+}
+
+# замените на "carbon_reductor_7", если используете Carbon Reductor 7.
+carbon_reductor_8
 
 . /tmp/reductor.config
 
