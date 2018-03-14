@@ -2,6 +2,13 @@
 
 set -eu
 
+SYSCONFIG=/etc/sysconfig/named_fakezone_generator
+if [ -f $SYSCONFIG ]; then
+	. $SYSCONFIG
+fi
+REDUCTOR_IP="${REDUCTOR_IP:-10.0.0.1}"
+REDUCTOR_VERSION="${REDUCTOR_VERSION:-8}"
+
 LOCKFILE=/tmp/fakezone_generator.lock
 exec 3>$LOCKFILE
 
@@ -9,22 +16,16 @@ if ! flock -w 60 -x 3; then
 	echo "Не удалось захватить lock fakezone_generator"
 	exit 1
 fi
-REDUCTOR_IP=10.0.0.1
 
 # чтобы scp не спрашивал пароль нужно создать ssh-ключи и закинуть их с помощью ssh-copy-id на carbon reductor
-
-carbon_reductor_7() {
+if [ "$REDUCTOR_VERSION" == '7' ]; then
 	scp root@$REDUCTOR_IP:/usr/local/Reductor/userinfo/config /tmp/reductor.config
 	scp root@$REDUCTOR_IP:/usr/local/Reductor/lists/https.resolv /tmp/reductor.https.resolv
-}
-
-carbon_reductor_8() {
+else
+	[ "$REDUCTOR_VERSION" != '8' ] && echo "WARNING: Неизвестная версия Carbon Reductor $REDUCTOR_VERSION, считаем что 8"
 	scp root@$REDUCTOR_IP:/app/reductor/cfg/config /tmp/reductor.config
 	scp root@$REDUCTOR_IP:/app/reductor/usr/local/Reductor/lists/https.resolv /tmp/reductor.https.resolv
-}
-
-# замените на "carbon_reductor_7", если используете Carbon Reductor 7.
-carbon_reductor_8
+fi
 
 . /tmp/reductor.config
 
