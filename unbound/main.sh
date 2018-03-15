@@ -24,7 +24,7 @@ if [ "$REDUCTOR_VERSION" == '7' ]; then
 else
 	[ "$REDUCTOR_VERSION" != '8' ] && echo "WARNING: Неизвестная версия Carbon Reductor $REDUCTOR_VERSION, считаем что 8"
 	scp root@$REDUCTOR_IP:/app/reductor/cfg/config /tmp/reductor.config
-	scp root@$REDUCTOR_IP:/app/reductor/usr/local/Reductor/lists/https.resolv /tmp/reductor.https.resolv
+	scp root@$REDUCTOR_IP:/app/reductor/var/lib/reductor/lists/tmp/domains.all /tmp/reductor.https.resolv
 fi
 
 . /tmp/reductor.config
